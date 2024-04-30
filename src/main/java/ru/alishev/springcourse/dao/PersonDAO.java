@@ -2,6 +2,7 @@ package ru.alishev.springcourse.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.alishev.springcourse.models.Person;
@@ -24,7 +25,10 @@ public class PersonDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
+    public Person show(String email) {
+        return jdbcTemplate.query("Select * from Person where email =?", new Object[]{email},
+                new BeanPropertyRowMapper<Person>(Person.class)).stream().findFirst().orElse(null);
+    }
 
     public List<Person> index() {
         return jdbcTemplate.query("SELECT * FROM person", new PersonMapper());
@@ -85,7 +89,7 @@ public class PersonDAO {
     private List<Person> create1000people(){
         List<Person> people = new ArrayList<Person>();
         for (int i = 0; i < 1000; i++) {
-            people.add(new Person(i, "Name: " + i, 30, "test"+i+"@gmail.com"));
+            people.add(new Person(i, "Name: " + i, 30, "test"+i+"@gmail.com", "USA"));
         }
         return people;
     }

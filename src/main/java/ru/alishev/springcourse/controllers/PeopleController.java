@@ -80,5 +80,23 @@ public class PeopleController {
     }
 
 
+    public void testMultipleUpdate(){
+        List<Person>people = create1000people();
 
+        long start = System.currentTimeMillis();
+
+        for(Person person : people){
+            personDAO.save(person);
+        }
+
+        long end = System.currentTimeMillis();
+    }
+
+    private List<Person> create1000people(){
+        List<Person> people = new ArrayList<Person>();
+        for (int i = 0; i < 1000; i++) {
+            people.add(new Person(i, "Name: " + i, 30, "test"+i+"@gmail.com", "USA"));
+        }
+        return people;
+    }
 }
