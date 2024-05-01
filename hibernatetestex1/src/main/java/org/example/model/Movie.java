@@ -20,10 +20,9 @@ public class Movie {
     @JoinColumn(name = "director_id", referencedColumnName = "director_id")
     private Director director;
 
-    public Movie(String name, int year_of_production, Director director) {
+    public Movie(String name, int year_of_production) {
         this.name = name;
         this.year_of_production = year_of_production;
-        this.director = director;
     }
     public Movie() {}
 

@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -21,34 +22,12 @@ public class App {
         try{
             session.beginTransaction();
 
-//            Director director = session.get(Director.class, 1);
-//            System.out.println(director.getMovies());
-//            Movie movie = session.get(Movie.class, 11);
-//            System.out.println(movie.getDirector());
+            Director director = new Director("Test cascading5", 30);
+            director.addMovie(new Movie("Movie1", 2001));
+            director.addMovie(new Movie("Movie2", 2002));
+            director.addMovie(new Movie("Movie3", 2003));
 
-//            Director director = session.get(Director.class, 6);
-//            Movie movie = new Movie("Interstellar", 2014, director);
-//            session.save(movie);
-
-//            Director director = new Director("QUENTIN TARANTINO", 61, new ArrayList<>());
-//            Movie movie = new Movie("Pulp Fiction", 1994, director);
-//
-//            director.getMovies().add(movie);
-//
-//            session.save(director);
-//            session.save(movie);
-
-
-//            Movie movie = session.get(Movie.class, 9);
-//            movie.setDirector(session.get(Director.class, 3));
-//
-//            session.save(movie);
-
-
-            Movie movie = session.get(Movie.class, 1);
-
-            session.remove(movie);
-
+            session.save(director);
             session.getTransaction().commit();
         }
         finally {

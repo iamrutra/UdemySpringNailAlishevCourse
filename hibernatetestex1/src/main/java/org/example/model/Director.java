@@ -1,7 +1,9 @@
 package org.example.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,16 +22,22 @@ public class Director {
     private int age;
 
     @OneToMany(mappedBy = "director")
-    private List<Movie> movies;
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private List<Movie> movies = new ArrayList<Movie>();
 
     public Director() {}
 
-    public Director(String name, int age, List<Movie> movies) {
+    public Director(String name, int age) {
         this.name = name;
         this.age = age;
-        this.movies = movies;
     }
+    public void addMovie(Movie movie) {
+         if(this.movies == null)
+             this.movies = new ArrayList<>();
 
+         this.movies.add(movie);
+         movie.setDirector(this);
+    }
     public int getDirector_id() {
         return director_id;
     }

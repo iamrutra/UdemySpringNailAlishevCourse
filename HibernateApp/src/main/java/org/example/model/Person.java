@@ -1,7 +1,7 @@
 package org.example.model;
 
-
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.List;
 
@@ -14,6 +14,7 @@ public class Person {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "name")
@@ -22,19 +23,15 @@ public class Person {
     @Column(name = "age")
     private int age;
 
-    @OneToMany(mappedBy = "owner")
-    private List<Item> items;
+    @OneToOne(mappedBy = "person")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private Passport passports;
 
     public Person() {}
 
-    public Person(int id, String name, int age) {
-        this.id = id;
+    public Person(String name, int age) {
         this.name = name;
         this.age = age;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
     }
 
     public int getId() {
@@ -59,5 +56,24 @@ public class Person {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Passport getPassports() {
+        return passports;
+    }
+
+    public void setPassports(Passport passports) {
+        this.passports = passports;
+        passports.setPerson(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", passports=" + passports +
+                '}';
     }
 }
