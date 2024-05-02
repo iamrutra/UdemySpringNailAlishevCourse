@@ -21,7 +21,7 @@ public class Director {
     @Column(name = "age")
     private int age;
 
-    @OneToMany(mappedBy = "director")
+    @OneToMany(mappedBy = "director", fetch = FetchType.EAGER)
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<Movie> movies = new ArrayList<Movie>();
 

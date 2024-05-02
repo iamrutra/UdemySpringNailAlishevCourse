@@ -1,38 +1,35 @@
 package org.example;
 
 
-import org.example.model.Director;
+import org.example.model.Actor;
 import org.example.model.Movie;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
 
 public class App {
     public static void main(String[] args) {
-        Configuration configuration = new Configuration().addAnnotatedClass(Director.class)
+        Configuration configuration = new Configuration()
+                .addAnnotatedClass(Actor.class)
                 .addAnnotatedClass(Movie.class);
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
 
-        try{
+        try(sessionFactory) {
             session.beginTransaction();
 
-            Director director = session.get(Director.class, 1);
+            Actor actor = session.get(Actor.class, 2);
+            Movie movie = actor.getMovies().get(0);
 
-            System.out.println("get director");
+            actor.getMovies().remove(0);
 
-            System.out.println(director.getMovies());
+            movie.getActors().remove(actor);
 
 
             session.getTransaction().commit();
-        }
-        finally {
-            sessionFactory.close();
         }
     }
 }
