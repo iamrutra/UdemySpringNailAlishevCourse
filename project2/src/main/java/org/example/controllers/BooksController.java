@@ -74,7 +74,10 @@ public class BooksController {
     @PostMapping("/{id}/removeOwner")
     public String removeOwner(@PathVariable int id, Model model){
         model.addAttribute("book", bookService.findById(id));
+        Book book = bookService.findById(id);
+        book.setTimeget(null);
         bookService.removeOwner(id);
+        bookService.save(book);
         return "redirect:/books/" + id;
     }
     @PostMapping("/{id}/delete")
@@ -85,9 +88,9 @@ public class BooksController {
     @PostMapping("/{id}/setOwner")
     public String setOwner(@PathVariable int id, @RequestParam("ownerId") int ownerId) {
         Book book = bookService.findById(id);
-        Date now = new Date();
         Person owner = peopleService.findById(ownerId);
         if (book != null && owner != null) {
+            book.setTimeget(new Date());
             book.setOwner(owner);
             bookService.save(book);
         } else {
