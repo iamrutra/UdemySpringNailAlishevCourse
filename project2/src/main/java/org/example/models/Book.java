@@ -93,6 +93,7 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", year=" + year +
+                ", timeGet=" + timeget +
                 '}';
     }
 }

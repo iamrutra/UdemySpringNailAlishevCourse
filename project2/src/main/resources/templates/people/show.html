@@ -9,13 +9,13 @@
 <hr>
 <div th:if="${books != null}">
     <h1>Книги</h1>
-    <section th:each="book : ${books}">
-        <span th:if="${diffDays > 10}">
-    <p th:style="'color:red'" th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">VALUE</p>
-</span>
-        <span th:if="${diffDays < 10}">  <p th:style="'color:green'" th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">VALUE</p>
-</span>
-
+    <section th:each="book, index : ${books}">
+    <span th:if="${diffDays[index.index].toDays() > 10}">
+        <p th:style="'color:red'" th:text="${book.title + ', ' + book.author + ', ' + book.year}">VALUE</p>
+    </span>
+        <span th:if="${diffDays[index.index].toDays() <= 10}">
+        <p th:style="'color:green'" th:text="${book.title + ', ' + book.author + ', ' + book.year}">VALUE</p>
+    </span>
     </section>
 </div>
 <div th:unless="${books != null}">

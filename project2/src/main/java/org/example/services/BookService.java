@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,29 +25,44 @@ import java.util.List;
 public class BookService {
 
     private final BooksRepository booksRepository;
+    private final PeopleService peopleService;
 
     @Autowired
-    public BookService(BooksRepository booksRepository) {
+    public BookService(BooksRepository booksRepository, PeopleService peopleService) {
         this.booksRepository = booksRepository;
+        this.peopleService = peopleService;
     }
+
 
     public Book findById(int id) {
         return booksRepository.findById(id).stream().findFirst().orElse(null);
     }
-
-    public Duration getDiffTime(int id) {
-        Book book = findById(id);
-        if (book.getTimeget() != null) {
-            LocalDateTime currentTime = LocalDateTime.now();
-            LocalDateTime bookTime = book.getTimeget().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-            return Duration.between(bookTime, currentTime);
-        }
-        return null;
+    public List<Book> findAllByOwner(Person owner) {
+        return booksRepository.findAllByOwner(owner);
     }
-    public long getDiffDays(int id) {
-        Duration diffTime = getDiffTime(id);
-        System.out.println(diffTime.toDays());
-        return diffTime != null ? diffTime.toDays() : 0;
+
+
+    public List<Long> getDiffTime(int id) {
+        Person owner = peopleService.findById(id);
+        List<Book> books = booksRepository.findAllByOwner(owner);
+        List<Long> durations = new ArrayList<>();
+        System.out.println(books);
+        for (Book book : books) {
+            if (book.getTimeget() != null) {
+                LocalDateTime currentTime = LocalDateTime.now();
+                LocalDateTime bookTime = book.getTimeget().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                durations.add(Duration.between(bookTime, currentTime).toDays());
+            }
+        }
+        return durations;
+    }
+    public List<Duration> getDiffDays(int id) {
+        List<Long> diffTime = getDiffTime(id);
+        List<Duration> durations = new ArrayList<>();
+        for (Long diff : diffTime) {
+            durations.add(Duration.ofDays(diff));
+        }
+        return durations;
     }
 
     public List<Book> findAll() {
@@ -75,5 +91,9 @@ public class BookService {
     public void setOwner(int id, Person owner) {
         Book book = findById(id);
         book.setOwner(owner);
+    }
+
+    public List<Book> findByTitleStartingWith(String title) {
+        return booksRepository.findByTitleStartingWith(title);
     }
 }
