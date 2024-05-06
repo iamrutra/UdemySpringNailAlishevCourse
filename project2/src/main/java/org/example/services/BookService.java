@@ -46,7 +46,6 @@ public class BookService {
         Person owner = peopleService.findById(id);
         List<Book> books = booksRepository.findAllByOwner(owner);
         List<Long> durations = new ArrayList<>();
-        System.out.println(books);
         for (Book book : books) {
             if (book.getTimeget() != null) {
                 LocalDateTime currentTime = LocalDateTime.now();
