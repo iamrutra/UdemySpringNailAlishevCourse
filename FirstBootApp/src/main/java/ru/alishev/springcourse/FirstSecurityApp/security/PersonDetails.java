@@ -1,12 +1,10 @@
 package ru.alishev.springcourse.FirstSecurityApp.security;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.alishev.springcourse.FirstSecurityApp.models.Person;
 
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * @author Neil Alishev
@@ -20,7 +18,7 @@ public class PersonDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(person.getRole()));
+        return null;
     }
 
     @Override
