@@ -1,9 +1,9 @@
 package ru.alishev.springcourse.project3.util;
 
-public class PersonErrorResponse {
+public class ErrorResponse {
     private String message;
 
-    public PersonErrorResponse(String message) {
+    public ErrorResponse(String message) {
         this.message = message;
     }
 
