@@ -13,21 +13,21 @@ public class Measurement {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    @NotNull(message = "Значение не может быть пустым")
+    @NotNull(message = "Should be written")
     @Min(value = -100, message = "Значение не может быть меньше -100")
     @Max(value = 100, message = "Значение не может быть больше 100")
     @Column(name = "value")
     private double value;
 
-    @NotNull(message = "Значение не может оставаться пустым")
+    @NotNull(message = "Should be written")
     @Column(name = "raining")
     private boolean raining;
 
-    @ManyToOne
+    @NotNull(message = "Should be written")
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sensor_id", referencedColumnName = "id")
-    @NotNull(message = "Значение не может быть пустым")
     private Sensor sensor;
 
     public Measurement(double value, boolean raining) {
@@ -36,11 +36,11 @@ public class Measurement {
     }
     public Measurement() {}
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

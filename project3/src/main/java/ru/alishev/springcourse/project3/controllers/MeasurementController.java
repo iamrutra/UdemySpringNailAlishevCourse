@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.alishev.springcourse.project3.models.Measurement;
 import ru.alishev.springcourse.project3.models.Sensor;
@@ -29,20 +31,23 @@ public class MeasurementController {
 
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> registerMeasurement(@RequestBody @Valid Measurement measurement,
-                               BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+                                                          BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             StringBuilder errorsMsg = new StringBuilder();
 
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-            for(FieldError fieldError : fieldErrors){
+            System.out.println(fieldErrors);
+            for (FieldError fieldError : fieldErrors) {
+                System.out.println(fieldError.getField() + ": " + fieldError.getDefaultMessage());
                 errorsMsg.append(fieldError.getField())
                         .append(" - ").append(fieldError.getDefaultMessage())
                         .append(";");
             }
             throw new NotCreatedException(errorsMsg.toString());
+        } else {
+            measurementService.save(measurement);
+            return ResponseEntity.ok(HttpStatus.OK);
         }
-        measurementService.save(measurement);
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @ExceptionHandler

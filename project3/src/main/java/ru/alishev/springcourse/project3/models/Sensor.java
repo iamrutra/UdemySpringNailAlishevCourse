@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table(name = "sensor")
+@Table(name = "sensors")
 public class Sensor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +17,10 @@ public class Sensor {
 
     @Column(name = "name")
     @NotEmpty(message = "Название сенсора не должно быть пустым")
-    @Size(min = 3, max = 30, message = "Навзвание сенсора должно содердать от 3 до 30 символов")
+    @Size(min = 3, max = 30, message = "Название сенсора должно содердать от 3 до 30 символов")
     private String name;
 
-    @OneToMany(mappedBy = "sensor")
+    @OneToMany(mappedBy = "sensor", cascade = CascadeType.ALL)
     private List<Measurement> measurement;
 
     public Sensor(String name) {
